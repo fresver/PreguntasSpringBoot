@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Fragmentos</title>
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+
+	<!-- Barra de navegación -->
+	<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand">Mi Aplicación</a>
+		<div class="collapse navbar-collapse">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link" th:href="@{/home}">Home</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/acciones}">Acciones</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/preguntas/ver}">Ver preguntas</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/preguntas/cargarjson}">Carga un JSON</a></li>
+				<li class="nav-item"><a class="nav-link" href="swagger-ui.html">DOC SWAGGER</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/champions}">Perder el tiempo</a></li>
+				<li class="nav-item">
+					<img src="/img/isaac.gif" alt="Cargando" width="40" height="40">
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<!-- Pie de página -->
+	<footer th:fragment="footer" class="footer mt-5 py-3 bg-dark text-center text-white">
+		<p>2024 Mi Aplicación. Todos los derechos reservados.</p>
+	</footer>
+
+	<!-- Acciones -->
+	<div th:fragment="acciones" class="d-flex justify-content-center gap-4 mt-4">
+		<a class="btn btn-primary" th:href="@{/crear}">Crear una pregunta</a>
+		<a class="btn btn-primary" th:href="@{/preguntas/jugar}">Jugar</a>
+	</div>
+
+	<!-- Tipo de pregunta a crear -->
+	<div th:fragment="tiposdepreguntas" class="d-grid gap-3 justify-content-center mt-4">
+		<a href="/crear/pregunta-seleccion-unica" class="btn btn-primary" th:href="@{/formSelUnica}">Pregunta de
+			selección única</a>
+		<a href="/crear/pregunta-verdadero-falso" class="btn btn-primary" th:href="@{formTrueFalse}">Pregunta de
+			verdadero o falso</a>
+		<a href="/crear/pregunta-seleccion-multiple" class="btn btn-primary" th:href="@{/formSelMult}">Pregunta de
+			selección múltiple</a>
+	</div>
+
+	<!-- Home div principal -->
+	<div th:fragment="divhome">
+		<div class="container mt-5">
+			<div class="row justify-content-center">
+				<div class="col-12 text-center">
+					<h1>Bienvenido a Mi Aplicación</h1>
+					<p>Preguntas de diferentes tipos.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Listado de todas las preguntas -->
+	<div th:fragment="listadotodaslaspreguntas" class="container mt-5">
+		<h1 class="mb-4 text-center">Listado de preguntas</h1>
+
+		<table class="table table-striped table-bordered text-white">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Enunciado</th>
+					<th scope="col">Temática</th>
+					<th scope="col">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="pregunta : ${preguntasPage.content}" class="text-white">
+					<td th:text="${pregunta.id}"></td>
+					<td th:text="${pregunta.enunciado}"></td>
+					<td>
+						<a th:href="@{/preguntasportematica/{tematica}(tematica=${pregunta.tematica.tematica})}"
+							th:text="${pregunta.tematica.tematica}" class="text-decoration-none text-white"></a>
+					</td>
+					<td>
+						<a th:href="@{/editquestion/{id}(id=${pregunta.id})}" class="btn btn-primary">Editar</a>
+						<form th:action="@{/deletequestion/{id}(id=${pregunta.id})}" method="post">
+							<button type="submit" class="btn btn-danger">Eliminar</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<!-- Controles de paginación -->
+		<div class="mt-4 text-center">
+			<a th:if="${currentPage > 0}" th:href="@{${baseUrl}(page=${currentPage - 1}, size=${pageSize})}"
+				class="btn btn-secondary">Anterior</a>
+
+			<span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+				<a th:if="${i != currentPage}" th:href="@{${baseUrl}(page=${i}, size=${pageSize})}"
+					class="btn btn-secondary">[[${i + 1}]]</a>
+				<span th:if="${i == currentPage}" class="btn btn-primary">[[${i + 1}]]</span>
+			</span>
+
+			<a th:if="${currentPage < totalPages - 1}"
+				th:href="@{${baseUrl}(page=${currentPage + 1}, size=${pageSize})}"
+				class="btn btn-secondary">Siguiente</a>
+		</div>
+
+	</div>
+
+	<!-- Cargar un archivo -->
+	<div th:fragment="cargararchivo" class="container mt-5">
+		<form th:action="@{/preguntas/cargar}" method="post" enctype="multipart/form-data"
+			class="d-flex justify-content-center align-items-center gap-3">
+			<input type="file" name="file" class="form-control" />
+			<button type="submit" class="btn btn-primary">Cargar Preguntas</button>
+		</form>
+	</div>
+
+	<!-- Acciones de juego -->
+	<div th:fragment="jugaracciones" class="container mt-5">
+		<div class="d-flex justify-content-center gap-4">
+			<a class="btn btn-primary" th:href="@{/jugarSelUnica}">Preguntas aleatorias de selección única</a>
+			<a class="btn btn-primary" th:href="@{/jugarTrueFalse}">Preguntas aleatorias de verdadero falso</a>
+			<a class="btn btn-primary" th:href="@{/jugarSelMult}">Preguntas aleatorias de selección múltiple</a>
+		</div>
+	</div>
+
+	<!-- Preguntas ver acciones -->
+	<div th:fragment="preguntasveracciones" class="container mt-5">
+		<div class="d-flex justify-content-center gap-4">
+			<a class="btn btn-primary" th:href="@{/preguntas/all}">Todas las preguntas</a>
+			<a class="btn btn-primary" th:href="@{/preguntasselunica}">Preguntas de selección única</a>
+			<a class="btn btn-primary" th:href="@{/preguntastruefalse}">Preguntas de verdadero o falso</a>
+			<a class="btn btn-primary" th:href="@{/preguntasselmult}">Preguntas de selección múltiple</a>
+		</div>
+	</div>
+
+	<!-- Listado de preguntas por temática -->
+	<div th:fragment="preguntasportematica" class="container mt-5">
+		<h1 class="mb-4 text-center">Listado de preguntas</h1>
+
+		<table class="table table-striped table-bordered text-white">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Enunciado</th>
+					<th scope="col">Temática</th>
+					<th scope="col">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="pregunta : ${preguntasportematica}" class="text-white">
+					<td th:text="${pregunta.id}"></td>
+					<td th:text="${pregunta.enunciado}"></td>
+					<td>
+						<a th:href="@{/preguntasportematica/{tematica}(tematica=${pregunta.tematica.tematica})}"
+							th:text="${pregunta.tematica.tematica}" class="text-decoration-none text-white"></a>
+					</td>
+					<td>
+						<a th:href="@{/editquestion/{id}(id=${pregunta.id})}" class="btn btn-primary">Editar</a>
+						<form th:action="@{/deletequestion/{id}(id=${pregunta.id})}" method="post">
+							<button type="submit" class="btn btn-danger">Eliminar</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Minijuego LoL -->
+	<div th:fragment="lol" class="container mt-5">
+		<h1 class="mb-4 text-center text-white">Adivina el Campeón</h1>
+
+		<!-- Mensajes de error o éxito -->
+		<div id="messages">
+			<div th:if="${errorMessage}" class="alert alert-danger">
+				<p th:text="${errorMessage}"></p>
+			</div>
+			<div th:if="${successMessage}" class="alert alert-success">
+				<p th:text="${successMessage}"></p>
+			</div>
+		</div>
+
+		<!-- Tabla del campeón actual -->
+		<table class="table table-striped table-dark text-white">
+			<thead>
+				<tr>
+					<th>Imagen</th>
+					<th>Tu Respuesta</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<img th:src="${selectedChampion.image}" alt="Imagen del campeón" class="img-thumbnail"
+							width="100" height="100" />
+					</td>
+					<td>
+						<!-- Formulario para verificar el nombre -->
+						<form id="guessForm" th:action="@{/verificarCampeon}" method="post">
+							<input type="text" name="campeonNombre" id="campeonNombre" class="form-control"
+								placeholder="Escribe el nombre del campeón" required />
+							<button type="submit" class="btn btn-success mt-2">Verificar</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Form de editar preguntas -->
+	<div class="container mt-5">
+		<form th:fragment="editarpreguntasform" th:action="@{/updatequestion}" method="post">
+			<input type="hidden" name="id" th:value="${pregunta.id}" />
+
+			<div class="form-group mb-3">
+				<label>Enunciado:</label>
+				<input type="text" name="enunciado" th:value="${pregunta.enunciado}" class="form-control" required />
+			</div>
+
+			<div th:if="${pregunta.getClass().name == 'com.questions.dam2.entity.PreguntaSelUnica'}">
+				<label>Opciones:</label>
+				<div th:each="opcion, idx : ${pregunta.opciones}">
+					<input type="text" name="|opciones[${idx}]|" th:value="${opcion}" class="form-control mb-2"
+						required />
+				</div>
+				<label>Respuesta Correcta:</label>
+				<input type="text" name="respuestaCorrecta" th:value="${pregunta.respuestaCorrecta}"
+					class="form-control" required />
+			</div>
+
+			<div th:if="${pregunta.getClass().name == 'com.questions.dam2.entity.PreguntaSelMult'}">
+				<label>Opciones:</label>
+				<div th:each="opcion, idx : ${pregunta.opciones}">
+					<input type="text" name="|opciones[${idx}]|" th:value="${opcion}" class="form-control mb-2"
+						required />
+				</div>
+				<label>Respuestas Correctas:</label>
+				<div th:each="respuesta, idx : ${pregunta.respuestasCorrectas}">
+					<input type="text" name="|respuestasCorrectas[${idx}]|" th:value="${respuesta}"
+						class="form-control mb-2" required />
+				</div>
+			</div>
+
+			<div th:if="${pregunta.getClass().name == 'com.questions.dam2.entity.PreguntaTrueFalse'}">
+				<label>Respuesta Correcta:</label>
+				<select name="respuestaCorrecta" class="form-control" required>
+					<option th:value="true" th:text="'Verdadero'" th:selected="${pregunta.isRespuesta}"></option>
+					<option th:value="false" th:text="'Falso'" th:selected="${!pregunta.isRespuesta}"></option>
+				</select>
+			</div>
+
+			<button type="submit" class="btn btn-primary mt-3">Guardar</button>
+		</form>
+	</div>
+
+	<script src="/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

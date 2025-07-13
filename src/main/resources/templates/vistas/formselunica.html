@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Selección Única</title>
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+</head>
+
+<body class="bg-dark text-white">
+
+	<div th:replace="vistas/fragmentos/fragments::navbar"></div>
+
+	<div class="container mt-5">
+		<h2>Agregar pregunta de selección única</h2>
+		<form th:action="@{/preguntaSelUnica/guardar}"
+			th:object="${preguntaSelUnica}" method="post">
+
+			<div class="mb-3">
+				<label for="preguntaSelUnica" class="form-label">Enunciado</label> 
+				<input type="text" id="enunciado" th:field="*{enunciado}" name="enunciado" class="form-control" required>
+			</div>
+
+			<div id="opciones-container" class="mb-3">
+				<label class="form-label">Opciones</label>
+				<div class="opcion-item">
+					<input type="text" class="form-control mb-2" name="opciones[]" required placeholder="Opción 1">
+				</div>
+			</div>
+
+			<button type="button" id="btn-add-opcion" class="btn btn-success">Añadir
+				Respuesta</button>
+
+
+			<div class="mb-3">
+				<label for="preguntaSelUnica" class="form-label">Respuesta
+					correcta</label> <input type="text" id="respuestaCorrecta"
+					th:field="*{respuestaCorrecta}" name="respuestaCorrecta"
+					class="form-control" required>
+			</div>
+
+			<div class="mb-3">
+				<label for="tematica" class="form-label">Temática</label> <select
+					id="tematica" th:field="*{tematica}" class="form-control" required>
+					<option
+						th:each="tematica : ${T(com.questions.dam2.entity.Tematica).values()}"
+						th:value="${tematica}" th:text="${tematica.tematica}"></option>
+				</select>
+			</div>
+
+			<button type="submit" class="btn btn-primary">Guardar pregunta</button>
+		</form>
+	</div>
+
+	<script th:inline="javascript">
+		document.getElementById('btn-add-opcion').addEventListener(
+				'click',
+				function() {
+					// Crear un nuevo campo de texto para la opción
+					var newOption = document.createElement('div');
+					newOption.classList.add('opcion-item');
+
+					// Crear el campo de texto de la nueva opción
+					var input = document.createElement('input');
+					input.type = 'text';
+					input.classList.add('form-control', 'mb-2');
+					input.name = 'opciones[]';
+					input.placeholder = 'Nueva opción';
+					input.required = true;
+
+					// Agregar el input al contenedor
+					newOption.appendChild(input);
+					document.getElementById('opciones-container').appendChild(
+							newOption);
+				});
+	</script>
+
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+[
+    {
+        "dtype": "selUnica",
+        "enunciado": "¿Cuál es la capital de Francia?",
+        "tematica": "GEO",
+        "opciones": ["París", "Madrid", "Roma", "Londres"],
+        "respuestaCorrecta": "París",
+        "respuestasCorrectas": [],
+        "respuesta": false
+    },
+    {
+        "dtype": "selMult",
+        "enunciado": "¿Cuáles de estos son planetas del sistema solar?",
+        "tematica": "AST",
+        "opciones": ["Mercurio", "Venus", "Plutón", "Marte", "Sol"],
+        "respuestaCorrecta": "",
+        "respuestasCorrectas": ["Mercurio", "Venus", "Marte"],
+        "respuesta": false
+    },
+    {
+        "dtype": "trueFalse",
+        "enunciado": "El sol es una estrella.",
+        "tematica": "AST",
+        "opciones": [],
+        "respuestaCorrecta": "",
+        "respuestasCorrectas": [],
+        "respuesta": true
+    },
+    {
+        "dtype": "selUnica",
+        "enunciado": "¿Cuál es el océano más grande del mundo?",
+        "tematica": "OTR",
+        "opciones": ["Atlántico", "Indico", "Pacífico", "Ártico"],
+        "respuestaCorrecta": "Pacífico",
+        "respuestasCorrectas": [],
+        "respuesta": false
+    },
+    {
+        "dtype": "selMult",
+        "enunciado": "¿Cuáles son los continentes?",
+        "tematica": "GEO",
+        "opciones": ["Asia", "Europa", "Antártida", "Mercurio"],
+        "respuestaCorrecta": "",
+        "respuestasCorrectas": ["Asia", "Europa", "Antártida"],
+        "respuesta": false
+    },
+    {
+        "dtype": "trueFalse",
+        "enunciado": "La Tierra es plana.",
+        "tematica": "AST",
+        "opciones": [],
+        "respuestaCorrecta": "",
+        "respuestasCorrectas": [],
+        "respuesta": false
+    }
+]

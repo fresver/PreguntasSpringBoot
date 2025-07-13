@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivina el Campeón</title>
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+<body class="bg-dark text-white">
+    <div th:replace="vistas/fragmentos/fragments::navbar"></div>
+	<div th:replace="vistas/fragmentos/fragments::lol"></div>
+	<div th:replace="vistas/fragmentos/fragments::footer"></div>
+
+    <script>
+        document.getElementById("guessForm").addEventListener("submit", function (event) {
+            const inputField = document.getElementById("campeonNombre");
+            if (!inputField.value.trim()) {
+                event.preventDefault();
+                alert("Por favor, escribe un nombre antes de enviar.");
+            }
+        });
+    </script>
+	<script src="/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
